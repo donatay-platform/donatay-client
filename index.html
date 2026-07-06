@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DonationSpace — Твой современный хаб для донатов</title>
+    <!-- Tailwind CSS CDN for gorgeous look -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons for modern, fresh symbols -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0b0f19;
+            color: #f3f4f6;
+        }
+        .gradient-bg {
+            background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 90% 10%, rgba(236, 72, 153, 0.1) 0%, transparent 40%);
+        }
+        .neon-glow {
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen flex flex-col">
+
+    <!-- Header / Navigation -->
+    <header class="border-b border-gray-800/80 backdrop-blur-md sticky top-0 z-50 bg-[#0b0f19]/70">
+        <div class="max-width-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="p-2 bg-gradient-to-tr from-indigo-500 to-pink-500 rounded-xl text-white shadow-lg">
+                    <i data-lucide="sparkles" class="w-6 h-6"></i>
+                </div>
+                <span class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-indigo-400 to-pink-500 bg-clip-text text-transparent">DonationSpace</span>
+            </div>
+            
+            <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-400">
+                <a href="#" class="hover:text-indigo-400 transition-colors">Главная</a>
+                <a href="#" class="hover:text-indigo-400 transition-colors">Обзор кампаний</a>
+                <a href="#" class="hover:text-indigo-400 transition-colors">Лидерборд</a>
+            </nav>
+
+            <div class="flex items-center gap-3">
+                <button onclick="switchTab('login')" class="text-sm font-medium text-gray-400 hover:text-white transition-colors">Вход</button>
+                <button onclick="switchTab('register')" class="px-4 py-2 bg-gradient-to-r from-indigo-500 to-pink-500 hover:from-indigo-600 hover:to-pink-600 text-white text-sm font-semibold rounded-xl transition-all shadow-md hover:scale-105">Создать страницу</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="flex-grow flex items-center justify-center p-6">
+        
+        <!-- Registration & Auth Card -->
+        <div id="auth-card" class="bg-gray-900/60 border border-gray-800/80 rounded-3xl w-full max-w-md p-8 backdrop-blur-xl shadow-2xl relative overflow-hidden">
+            
+            <!-- Tabs (Login / Register) -->
+            <div class="flex border-b border-gray-800 pb-4 mb-6 gap-4">
+                <button id="tab-login" onclick="switchTab('login')" class="text-xl font-bold pb-2 border-b-2 border-transparent text-gray-500 hover:text-gray-300 transition-all">Вход</button>
+                <button id="tab-register" onclick="switchTab('register')" class="text-xl font-bold pb-2 border-b-2 border-indigo-500 text-white transition-all">Регистрация</button>
+                <button id="tab-profile" onclick="switchTab('profile')" class="hidden text-xl font-bold pb-2 border-b-2 border-transparent text-gray-500 transition-all">Профиль</button>
+            </div>
+
+            <!-- REGISTER FORM -->
+            <div id="form-register" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Электронная почта</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+                            <i data-lucide="mail" class="w-5 h-5"></i>
+                        </span>
+                        <input type="email" id="reg-email" placeholder="example@mail.com" class="w-full bg-gray-950 border border-gray-800 rounded-xl py-3 pl-10 pr-4 text-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all placeholder-gray-600">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Пароль</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+                            <i data-lucide="lock" class="w-5 h-5"></i>
+                        </span>
+                        <input type="password" id="reg-password" placeholder="••••••••" class="w-full bg-gray-950 border border-gray-800 rounded-xl py-3 pl-10 pr-4 text-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all placeholder-gray-600">
+                    </div>
+                </div>
+                <button onclick="handleRegister()" class="w-full py-3.5 bg-gradient-to-r from-indigo-500 to-pink-500 hover:from-indigo-600 hover:to-pink-600 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-indigo-500/10 hover:scale-[1.02]">
+                    Создать аккаунт
+                </button>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <div id="form-login" class="space-y-4 hidden">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Электронная почта</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+                            <i data-lucide="mail" class="w-5 h-5"></i>
+                        </span>
+                        <input type="email" id="login-email" placeholder="example@mail.com" class="w-full bg-gray-950 border border-gray-800 rounded-xl py-3 pl-10 pr-4 text-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all placeholder-gray-600">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Пароль</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+                            <i data-lucide="lock" class="w-5 h-5"></i>
+                        </span>
+                        <input type="password" id="login-password" placeholder="••••••••" class="w-full bg-gray-950 border border-gray-800 rounded-xl py-3 pl-10 pr-4 text-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all placeholder-gray-600">
+                    </div>
+                </div>
+                <button onclick="handleLogin()" class="w-full py-3.5 bg-gradient-to-r from-indigo-500 to-pink-500 hover:from-indigo-600 hover:to-pink-600 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-indigo-500/10 hover:scale-[1.02]">
+                    Войти в систему
+                </button>
+            </div>
+
+            <!-- MFA PROMPT (STEP 2 OF LOGIN) -->
+            <div id="form-mfa-verify" class="space-y-4 hidden">
+                <div class="text-center mb-4">
+                    <div class="mx-auto w-12 h-12 rounded-full bg-indigo-500/10 text-indigo-400 flex items-center justify-center mb-3">
+                        <i data-lucide="shield-check" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-lg font-bold">Двухфакторная защита</h3>
+                    <p class="text-xs text-gray-400 mt-1">Пожалуйста, введите 6-значный код подтверждения</p>
+                </div>
+                <div>
+                    <input type="text" id="mfa-login-code" placeholder="123456" class="w-full text-center tracking-[1em] text-lg font-bold bg-gray-950 border border-gray-800 rounded-xl py-3 px-4 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all placeholder-gray-600">
+                </div>
+                <button onclick="submitMfaCode()" class="w-full py-3 bg-gradient-to-r from-indigo-500 to-pink-500 hover:from-indigo-600 hover:to-pink-600 text-white font-bold rounded-xl transition-all">
+                    Подтвердить вход
+                </button>
+            </div>
+
+            <!-- PROFILE MANAGEMENT -->
+            <div id="form-profile" class="space-y-6 hidden">
+                <!-- Cool User Card / Preview Header -->
+                <div class="relative rounded-2xl overflow-hidden border border-gray-800 bg-gray-950">
+                    <div id="profile-banner" class="h-24 bg-gradient-to-r from-indigo-600 to-pink-600 relative"></div>
+                    <div class="px-4 pb-4 flex flex-col items-center -mt-10 relative z-10">
+                        <img id="profile-avatar" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&h=100" class="w-20 h-20 rounded-2xl border-4 border-gray-950 object-cover bg-gray-900 shadow-xl">
+                        <h4 id="profile-name" class="font-bold text-lg mt-2">Имя пользователя</h4>
+                        <p id="profile-email-label" class="text-xs text-gray-500">user@example.com</p>
+                    </div>
+                </div>
+
+                <!-- Forms Grid -->
+                <div class="space-y-4 max-h-80 overflow-y-auto pr-1">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 mb-1">Никнейм</label>
+                        <input type="text" id="prof-nickname" class="w-full bg-gray-950 border border-gray-800 rounded-xl py-2 px-3 text-sm focus:border-indigo-500 outline-none text-gray-200">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 mb-1">Ссылка на аватар</label>
+                        <input type="text" id="prof-avatar" class="w-full bg-gray-950 border border-gray-800 rounded-xl py-2 px-3 text-sm focus:border-indigo-500 outline-none text-gray-200">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 mb-1">Ссылка на баннер</label>
+                        <input type="text" id="prof-banner" class="w-full bg-gray-950 border border-gray-800 rounded-xl py-2 px-3 text-sm focus:border-indigo-500 outline-none text-gray-200">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 mb-1">Телефон</label>
+                        <input type="text" id="prof-phone" placeholder="+79998887766" class="w-full bg-gray-950 border border-gray-800 rounded-xl py-2 px-3 text-sm focus:border-indigo-500 outline-none text-gray-200">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 mb-1">Сменить пароль</label>
+                        <input type="password" id="prof-pass" placeholder="Введите новый пароль" class="w-full bg-gray-950 border border-gray-800 rounded-xl py-2 px-3 text-sm focus:border-indigo-500 outline-none text-gray-200">
+                    </div>
+
+                    <!-- MFA Configuration Section -->
+                    <div class="border-t border-gray-800 pt-4 mt-4">
+                        <h4 class="text-sm font-bold text-gray-300 mb-2">Двухфакторная аутентификация (MFA)</h4>
+                        <div class="flex gap-2">
+                            <button onclick="enableGoogleMfa()" class="flex-1 py-2 px-3 bg-indigo-600/20 hover:bg-indigo-600/30 border border-indigo-500/40 text-indigo-300 rounded-xl text-xs font-semibold transition-all">
+                                Настроить Google 2FA
+                            </button>
+                            <button onclick="enableSmsMfa()" class="flex-1 py-2 px-3 bg-pink-600/20 hover:bg-pink-600/30 border border-pink-500/40 text-pink-300 rounded-xl text-xs font-semibold transition-all">
+                                Включить СМС 2FA
+                            </button>
+                        </div>
+
+                        <!-- MFA SETUP BLOCK (Hidden by default) -->
+                        <div id="mfa-setup-panel" class="hidden mt-3 p-3 bg-gray-950 border border-gray-800 rounded-xl text-center space-y-2">
+                            <p class="text-xs text-indigo-400 font-semibold" id="mfa-setup-title">Настройка</p>
+                            <div class="p-2 bg-white rounded-lg inline-block text-black font-mono text-xs" id="mfa-setup-secret">
+                                SECRETCODEHERE
+                            </div>
+                            <p class="text-[10px] text-gray-500">Отсканируйте код или введите вручную, затем введите 6 цифр ниже:</p>
+                            <div class="flex gap-2">
+                                <input type="text" id="mfa-setup-verify-code" placeholder="123456" class="w-full text-center bg-gray-900 border border-gray-800 rounded-lg text-xs py-1.5 focus:border-indigo-500 outline-none text-white">
+                                <button onclick="verifyMfaSetup()" class="px-3 bg-indigo-600 text-white rounded-lg text-xs font-bold hover:bg-indigo-500">ОК</button>
+                            </div>
+                            <!-- Mock SMS helper code (since we run mock sms gateway) -->
+                            <div id="mfa-sms-helper" class="hidden text-xs text-pink-400"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex gap-3">
+                    <button onclick="saveProfile()" class="flex-1 py-3 bg-gradient-to-r from-indigo-500 to-pink-500 hover:from-indigo-600 hover:to-pink-600 text-white font-bold rounded-xl transition-all">
+                        Сохранить профиль
+                    </button>
+                    <button onclick="logout()" class="px-4 bg-gray-800 hover:bg-gray-700 text-white rounded-xl transition-all" title="Выйти">
+                        Выход
+                    </button>
+                </div>
+            </div>
+
+            <!-- STATUS MESSAGE TOASTER -->
+            <div id="toast" class="hidden mt-4 p-3 rounded-xl text-xs font-semibold text-center border"></div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-800/80 p-6 text-center text-xs text-gray-600 bg-gray-950/40">
+        <div>&copy; 2026 DonationSpace. Все права защищены. Разработано экспертом-разработчиком с Prim-архитектурой.</div>
+    </footer>
+
+    <!-- Logic Controller -->
+    <script>
+        // Init Lucide Icons
+        lucide.createIcons();
+
+        let jwtToken = localStorage.getItem("token") || "";
+        let currentUserEmail = localStorage.getItem("email") || "";
+
+        // Check if already logged in on load
+        if (jwtToken && currentUserEmail) {
+            switchTab('profile');
+            loadProfile();
+        } else {
+            switchTab('register');
+        }
+
+        function switchTab(tab) {
+            // Reset active styles
+            document.getElementById('tab-login').className = "text-xl font-bold pb-2 border-b-2 border-transparent text-gray-500 hover:text-gray-300 transition-all";
+            document.getElementById('tab-register').className = "text-xl font-bold pb-2 border-b-2 border-transparent text-gray-500 hover:text-gray-300 transition-all";
+            document.getElementById('tab-profile').className = "text-xl font-bold pb-2 border-b-2 border-transparent text-gray-500 hover:text-gray-300 transition-all";
+
+            document.getElementById('form-login').classList.add('hidden');
+            document.getElementById('form-register').classList.add('hidden');
+            document.getElementById('form-profile').classList.add('hidden');
+            document.getElementById('form-mfa-verify').classList.add('hidden');
+
+            if (tab === 'login') {
+                document.getElementById('tab-login').className = "text-xl font-bold pb-2 border-b-2 border-indigo-500 text-white transition-all";
+                document.getElementById('form-login').classList.remove('hidden');
+            } else if (tab === 'register') {
+                document.getElementById('tab-register').className = "text-xl font-bold pb-2 border-b-2 border-indigo-500 text-white transition-all";
+                document.getElementById('form-register').classList.remove('hidden');
+            } else if (tab === 'profile') {
+                document.getElementById('tab-profile').classList.remove('hidden');
+                document.getElementById('tab-profile').className = "text-xl font-bold pb-2 border-b-2 border-indigo-500 text-white transition-all";
+                document.getElementById('form-profile').classList.remove('hidden');
+            } else if (tab === 'mfa-verify') {
+                document.getElementById('form-mfa-verify').classList.remove('hidden');
+            }
+        }
+
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `mt-4 p-3 rounded-xl text-xs font-semibold text-center border ${isError ? 'bg-red-500/10 border-red-500/30 text-red-400' : 'bg-green-500/10 border-green-500/30 text-green-400'}`;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 5000);
+        }
+
+        async function handleRegister() {
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-password').value;
+
+            try {
+                const response = await fetch('http://localhost:8080/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    showToast("Регистрация успешна! Теперь вы можете войти.");
+                    switchTab('login');
+                } else {
+                    showToast(data.message || "Ошибка регистрации", true);
+                }
+            } catch (err) {
+                console.error(err);
+                showToast("Сервер недоступен (проверьте консоль браузера или CORS)", true);
+            }
+        }
+
+        async function handleLogin() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            try {
+                const response = await fetch('http://localhost:8080/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    if (data.mfaRequired) {
+                        currentUserEmail = email;
+                        switchTab('mfa-verify');
+                    } else {
+                        jwtToken = data.token;
+                        currentUserEmail = email;
+                        localStorage.setItem("token", jwtToken);
+                        localStorage.setItem("email", currentUserEmail);
+                        showToast("Авторизация успешна!");
+                        switchTab('profile');
+                        loadProfile();
+                    }
+                } else {
+                    showToast(data.message || "Неверная почта или пароль", true);
+                }
+            } catch (err) {
+                showToast("Ошибка при подключении к серверу", true);
+            }
+        }
+
+        async function submitMfaCode() {
+            const code = document.getElementById('mfa-login-code').value;
+
+            try {
+                const response = await fetch('http://localhost:8080/api/auth/login/verify-mfa', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: currentUserEmail, code })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    jwtToken = data.token;
+                    localStorage.setItem("token", jwtToken);
+                    localStorage.setItem("email", currentUserEmail);
+                    showToast("Авторизация с 2FA пройдена!");
+                    switchTab('profile');
+                    loadProfile();
+                } else {
+                    showToast("Неверный код безопасности", true);
+                }
+            } catch (err) {
+                showToast("Ошибка сервера", true);
+            }
+        }
+
+        async function loadProfile() {
+            try {
+                const response = await fetch('http://localhost:8080/api/profile', {
+                    headers: { 'Authorization': `Bearer ${jwtToken}` }
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    document.getElementById('profile-name').textContent = data.nickname || "Без никнейма";
+                    document.getElementById('profile-email-label').textContent = data.email;
+                    if (data.avatarUrl) {
+                        document.getElementById('profile-avatar').src = data.avatarUrl;
+                    }
+                    if (data.headerUrl) {
+                        document.getElementById('profile-banner').style.background = `url(${data.headerUrl}) center/cover no-repeat`;
+                    } else {
+                        document.getElementById('profile-banner').style.background = `linear-gradient(to right, #4f46e5, #ec4899)`;
+                    }
+
+                    document.getElementById('prof-nickname').value = data.nickname || "";
+                    document.getElementById('prof-avatar').value = data.avatarUrl || "";
+                    document.getElementById('prof-banner').value = data.headerUrl || "";
+                    document.getElementById('prof-phone').value = data.phoneNumber || "";
+                } else {
+                    showToast("Сессия истекла", true);
+                    logout();
+                }
+            } catch (err) {
+                showToast("Не удалось загрузить профиль", true);
+            }
+        }
+
+        async function saveProfile() {
+            const nickname = document.getElementById('prof-nickname').value;
+            const avatarUrl = document.getElementById('prof-avatar').value;
+            const headerUrl = document.getElementById('prof-banner').value;
+            const phoneNumber = document.getElementById('prof-phone').value;
+            const password = document.getElementById('prof-pass').value;
+
+            try {
+                const response = await fetch('http://localhost:8080/api/profile', {
+                    method: 'PUT',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${jwtToken}`
+                    },
+                    body: JSON.stringify({ nickname, avatarUrl, headerUrl, phoneNumber, password })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    showToast("Профиль сохранен!");
+                    loadProfile();
+                } else {
+                    showToast(data.message || "Ошибка обновления", true);
+                }
+            } catch (err) {
+                showToast("Ошибка при сохранении", true);
+            }
+        }
+
+        async function enableGoogleMfa() {
+            try {
+                const response = await fetch('http://localhost:8080/api/mfa/setup-google', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${jwtToken}` }
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    document.getElementById('mfa-setup-panel').classList.remove('hidden');
+                    document.getElementById('mfa-sms-helper').classList.add('hidden');
+                    document.getElementById('mfa-setup-title').textContent = "Google Authenticator Setup";
+                    document.getElementById('mfa-setup-secret').textContent = data.secret;
+                } else {
+                    showToast("Ошибка MFA", true);
+                }
+            } catch (err) {
+                showToast("Сервер недоступен", true);
+            }
+        }
+
+        async function enableSmsMfa() {
+            try {
+                // First lock on user's selected phone number in input
+                await saveProfile();
+
+                const response = await fetch('http://localhost:8080/api/mfa/setup-sms', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${jwtToken}` }
+                });
+                if (response.ok) {
+                    // Send code
+                    const sendCodeRes = await fetch('http://localhost:8080/api/mfa/send-sms-code', {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${jwtToken}` }
+                    });
+                    const mockCode = await sendCodeRes.text();
+
+                    document.getElementById('mfa-setup-panel').classList.remove('hidden');
+                    document.getElementById('mfa-setup-title').textContent = "SMS Authenticator Setup";
+                    document.getElementById('mfa-setup-secret').textContent = "Проверьте телефон";
+                    
+                    const helper = document.getElementById('mfa-sms-helper');
+                    helper.textContent = `[СМС-ШЛЮЗ СИМУЛЯЦИЯ]: Мы отправили код: ${mockCode}`;
+                    helper.classList.remove('hidden');
+                } else {
+                    showToast("Сначала укажите номер телефона в профиле", true);
+                }
+            } catch (err) {
+                showToast("Сервер недоступен", true);
+            }
+        }
+
+        async function verifyMfaSetup() {
+            const code = document.getElementById('mfa-setup-verify-code').value;
+            try {
+                const response = await fetch('http://localhost:8080/api/mfa/verify', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${jwtToken}`
+                    },
+                    body: JSON.stringify({ code })
+                });
+                const success = await response.json();
+                if (response.ok && success) {
+                    showToast("Двухфакторная защита (MFA) успешно включена!");
+                    document.getElementById('mfa-setup-panel').classList.add('hidden');
+                } else {
+                    showToast("Неверный проверочный код. Попробуйте снова.", true);
+                }
+            } catch (err) {
+                showToast("Ошибка подтверждения", true);
+            }
+        }
+
+        function logout() {
+            jwtToken = "";
+            currentUserEmail = "";
+            localStorage.clear();
+            switchTab('register');
+        }
+    </script>
+</body>
+</html>
