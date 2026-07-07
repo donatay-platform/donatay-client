@@ -1,0 +1,270 @@
+:root {
+  color-scheme: dark;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #080c14;
+  color: #f8fafc;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 10% 15%, rgba(99, 102, 241, 0.22), transparent 34rem),
+    radial-gradient(circle at 88% 82%, rgba(236, 72, 153, 0.16), transparent 32rem),
+    #080c14;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  border: 0;
+  border-radius: 14px;
+  padding: 0.85rem 1rem;
+  color: white;
+  background: linear-gradient(135deg, #6366f1, #ec4899);
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+button:disabled {
+  cursor: wait;
+  opacity: 0.55;
+}
+
+button.secondary {
+  background: rgba(148, 163, 184, 0.12);
+  border: 1px solid rgba(148, 163, 184, 0.24);
+}
+
+input {
+  width: 100%;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 14px;
+  background: rgba(2, 6, 23, 0.72);
+  color: white;
+  padding: 0.9rem 1rem;
+  outline: none;
+}
+
+input:focus {
+  border-color: rgba(99, 102, 241, 0.9);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.18);
+}
+
+label {
+  display: grid;
+  gap: 0.45rem;
+  color: #cbd5e1;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.app-shell {
+  width: min(1120px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0 4rem;
+}
+
+.hero-card,
+.panel,
+.notice {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(15, 23, 42, 0.68);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(22px);
+}
+
+.hero-card {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 1rem;
+  align-items: end;
+  border-radius: 28px;
+  padding: 2rem;
+  margin-bottom: 1rem;
+}
+
+.hero-card h1 {
+  max-width: 760px;
+  margin: 0.3rem 0 0.75rem;
+  font-size: clamp(2rem, 6vw, 4.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.06em;
+}
+
+.hero-text {
+  max-width: 720px;
+  color: #cbd5e1;
+  font-size: 1.05rem;
+}
+
+.api-grid {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.api-pill {
+  display: grid;
+  gap: 0.2rem;
+  border-radius: 18px;
+  background: rgba(2, 6, 23, 0.54);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  padding: 0.9rem;
+}
+
+.api-pill span,
+.eyebrow {
+  color: #a78bfa;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.api-pill strong {
+  color: #e2e8f0;
+  overflow-wrap: anywhere;
+}
+
+.notice {
+  border-radius: 18px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.notice.success {
+  border-color: rgba(34, 197, 94, 0.3);
+  color: #bbf7d0;
+}
+
+.notice.error {
+  border-color: rgba(248, 113, 113, 0.35);
+  color: #fecaca;
+}
+
+.panel {
+  border-radius: 24px;
+  padding: 1.3rem;
+}
+
+.auth-panel {
+  width: min(460px, 100%);
+  margin: 1rem auto 0;
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.tabs button {
+  background: rgba(148, 163, 184, 0.1);
+}
+
+.tabs button.active {
+  background: linear-gradient(135deg, #6366f1, #ec4899);
+}
+
+.form-stack {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+.profile-card {
+  overflow: hidden;
+  padding: 0;
+}
+
+.profile-header {
+  min-height: 190px;
+  background:
+    linear-gradient(135deg, rgba(99, 102, 241, 0.9), rgba(236, 72, 153, 0.8)),
+    #312e81;
+  background-size: cover;
+  background-position: center;
+}
+
+.profile-body {
+  display: flex;
+  gap: 1rem;
+  align-items: end;
+  padding: 0 1.3rem 1.3rem;
+  margin-top: -46px;
+}
+
+.avatar {
+  width: 96px;
+  height: 96px;
+  overflow: hidden;
+  flex: 0 0 auto;
+  border-radius: 28px;
+  background: #020617;
+  border: 4px solid #0f172a;
+  display: grid;
+  place-items: center;
+  color: #a78bfa;
+  font-size: 2rem;
+  font-weight: 900;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.panel h2,
+.profile-body h2 {
+  margin: 0.2rem 0;
+}
+
+.panel-title-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.muted {
+  color: #94a3b8;
+  margin: 0.25rem 0;
+}
+
+.mono {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 820px) {
+  .hero-card,
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-card {
+    padding: 1.2rem;
+  }
+}
